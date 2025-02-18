@@ -1,12 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
-import Header from './components/Header';  // Updated import path
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import Header from "./components/Header";
+import Menu from "./components/Menu";
+import "./App.css";
+import Hero from "./components/Hero";
+import Features from "./components/Features";
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-    </div>
+    <Router>
+      <div className="App">
+        <Header />
+        <Menu />
+        <Hero />
+        <Features/>
+      </div>
+    </Router>
   );
 }
 

@@ -12,9 +12,7 @@ const Header = () => {
           <div className="col-sm-4">
             <div className="logo" style={{ width: "100px", height: "100px" }}>
               <h1>
-                <a href="index.html">
                   <img src={logo} alt="Logo" />
-                </a>
               </h1>
             </div>
           </div>
@@ -25,8 +23,8 @@ const Header = () => {
               style={{ marginTop: "30px" }}
               placeholder="Search products..."
             />
-            <button>Search</button>
-          </div>
+        <input type="button" defaultValue="Search" />
+        </div>
           {/* Shopping Cart Section */}
           <div className="col-sm-4">
             <div className="shopping-item">
