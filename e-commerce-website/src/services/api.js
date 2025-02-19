@@ -9,7 +9,7 @@ export const fetchCategories = () => axios.get(`${API_BASE_URL}/categories`);
 export const fetchProductLists = () => axios.get(`${API_BASE_URL}/products-lists`);
 export const fetchAllProducts = () => axios.get(`${API_BASE_URL}/products`);
 export const fetchProductById = (productId) => axios.get(`${API_BASE_URL}/products/${productId}`);
-export const fetchProductsByCategory = (categoryId) => axios.get(`${API_BASE_URL}/products-lists/${categoryId}`);
+export const fetchProductsByCategory = (productListId) => axios.get(`${API_BASE_URL}/products-lists/${productListId}`);
 export const fetchSearchResults = (query) => axios.get(`${API_BASE_URL}/products?q=${query}`);
 
 // Top Products
