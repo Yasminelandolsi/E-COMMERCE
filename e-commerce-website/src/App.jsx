@@ -1,20 +1,21 @@
-import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
-import Header from "./components/Header";
-import Menu from "./components/Menu";
-import "./App.css";
-import Hero from "./components/Hero";
-import Features from "./components/Features";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Header />
-        <Menu />
-        <Hero />
-        <Features/>
-      </div>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        />
+        
+      </Routes>
     </Router>
   );
 }

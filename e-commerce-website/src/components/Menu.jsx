@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { fetchCategories } from "../services/api";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
 import "../assets/css/style.css";
 
 const Menu = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchCategories()
+      .then((response) => {
+        setCategories(response.data); // Assuming API returns an array of categories
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  }, []);
+
   return (
     <div className="mainmenu-area">
       <div className="container">
@@ -14,11 +27,20 @@ const Menu = () => {
               <li className="active">
                 <NavLink to="/" className="hover:text-gray-300">Home</NavLink>
               </li>
-              <li><NavLink to="/shop/samsung" className="hover:text-gray-300">Samsung</NavLink></li>
-              <li><NavLink to="/shop/apple" className="hover:text-gray-300">Apple</NavLink></li>
-              <li><NavLink to="/shop/lg" className="hover:text-gray-300">LG</NavLink></li>
-              <li><NavLink to="/shop/sony" className="hover:text-gray-300">Sony</NavLink></li>
-              <li><NavLink to="/shop/huawei" className="hover:text-gray-300">Huawei</NavLink></li>
+              {categories.length > 0 ? (
+                categories.map((category, index) => (
+                  <li key={index}>
+                    <NavLink
+                      to={`/shop/${category.name.toLowerCase()}`}
+                      className="hover:text-gray-300"
+                    >
+                      {category.name}
+                    </NavLink>
+                  </li>
+                ))
+              ) : (
+                <li>Loading categories...</li>
+              )}
             </ul>
           </nav>
         </div>
