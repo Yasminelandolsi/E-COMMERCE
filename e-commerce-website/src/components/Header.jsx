@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchAllProducts } from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
 import "../assets/css/style.css";
@@ -11,6 +11,7 @@ const Header = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation(); // Get the current location
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -67,26 +68,28 @@ const Header = () => {
               </h1>
             </div>
           </div>
-          {/* Search Bar Section */}
-          <div className="col-sm-4">
-            <input
-              type="text"
-              style={{ marginTop: "30px" }}
-              placeholder="Search products..."
-              value={query}
-              onChange={handleInputChange}
-            />
-            <input type="button" value="Search" onClick={handleSearchClick} />
-            {filteredProducts.length > 0 && (
-              <ul className="search-results" style={{ maxHeight: "200px", overflowY: "auto", marginTop: "10px", padding: "0", listStyleType: "none", border: "1px solid #ccc", borderRadius: "4px" }}>
-                {filteredProducts.map((product) => (
-                  <li key={product.id} onClick={() => handleProductClick(product.id)} style={{ padding: "10px", cursor: "pointer", borderBottom: "1px solid #ccc" }}>
-                    {product.name}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          {/* Conditionally Render Search Bar Section */}
+          {location.pathname !== "/checkout" && (
+            <div className="col-sm-4">
+              <input
+                type="text"
+                style={{ marginTop: "30px" }}
+                placeholder="Search products..."
+                value={query}
+                onChange={handleInputChange}
+              />
+              <input type="button" value="Search" onClick={handleSearchClick} />
+              {filteredProducts.length > 0 && (
+                <ul className="search-results" style={{ maxHeight: "200px", overflowY: "auto", marginTop: "10px", padding: "0", listStyleType: "none", border: "1px solid #ccc", borderRadius: "4px" }}>
+                  {filteredProducts.map((product) => (
+                    <li key={product.id} onClick={() => handleProductClick(product.id)} style={{ padding: "10px", cursor: "pointer", borderBottom: "1px solid #ccc" }}>
+                      {product.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
           {/* Shopping Cart Section */}
           <div className="col-sm-4">
             <div className="shopping-item">
