@@ -55,26 +55,29 @@ const ProductWidget = () => {
               <a href="#" className="wid-view-more" onClick={() => handleViewAll("topSellers")}>
                 View All
               </a>
-              {topSellers.slice(0, 3).map((product) => (
-                <div key={product.id} className="single-wid-product">
-                  <a href={`single-product.html?id=${product.id}`}>
-                  <img src={require(`../assets/products-img/${product.imageName.split('-')[0].charAt(0).toUpperCase() + product.imageName.split('-')[0].slice(1)}/${product.imageName}`)} alt={product.name} className="product-thumb"/>
-
-                  </a>
-                  <h2>
-                    <a href={`single-product.html?id=${product.id}`}>{product.name}</a>
-                  </h2>
-                  <div className="product-wid-rating">
-                    {[...Array(5)].map((_, i) => (
-                      <i key={i} className="fa fa-star"></i>
-                    ))}
+              {topSellers.slice(0, 3).map((product) => {
+                const brand = product.imageName.split('-')[0].toLowerCase();
+                const imagePath = require(`../assets/products-img/${brand}/${product.imageName}`);
+                return (
+                  <div key={product.id} className="single-wid-product">
+                    <a href={`single-product.html?id=${product.id}`}>
+                      <img src={imagePath} alt={product.name} className="product-thumb" />
+                    </a>
+                    <h2>
+                      <a href={`single-product.html?id=${product.id}`}>{product.name}</a>
+                    </h2>
+                    <div className="product-wid-rating">
+                      {[...Array(5)].map((_, i) => (
+                        <i key={i} className="fa fa-star"></i>
+                      ))}
+                    </div>
+                    <div className="product-wid-price">
+                      <ins>${product.price}</ins>
+                      <del>${product.oldPrice}</del>
+                    </div>
                   </div>
-                  <div className="product-wid-price">
-                    <ins>${product.price}</ins>
-                    <del>${product.oldPrice}</del>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -114,25 +117,29 @@ const ProductWidget = () => {
               <a href="#" className="wid-view-more" onClick={() => handleViewAll("newArrivals")}>
                 View All
               </a>
-              {newArrivals.slice(0, 3).map((product) => (
-                <div key={product.id} className="single-wid-product">
-                  <a href={`single-product.html?id=${product.id}`}>
-                  <img src={require(`../assets/products-img/${product.imageName.split('-')[0].charAt(0).toUpperCase() + product.imageName.split('-')[0].slice(1)}/${product.imageName}`)} alt={product.name} className="product-thumb"/>
-                  </a>
-                  <h2>
-                    <a href={`single-product.html?id=${product.id}`}>{product.name}</a>
-                  </h2>
-                  <div className="product-wid-rating">
-                    {[...Array(5)].map((_, i) => (
-                      <i key={i} className="fa fa-star"></i>
-                    ))}
+              {newArrivals.slice(0, 3).map((product) => {
+                const brand = product.imageName.split('-')[0].toLowerCase();
+                const imagePath = require(`../assets/products-img/${brand}/${product.imageName}`);
+                return (
+                  <div key={product.id} className="single-wid-product">
+                    <a href={`single-product.html?id=${product.id}`}>
+                      <img src={imagePath} alt={product.name} className="product-thumb" />
+                    </a>
+                    <h2>
+                      <a href={`single-product.html?id=${product.id}`}>{product.name}</a>
+                    </h2>
+                    <div className="product-wid-rating">
+                      {[...Array(5)].map((_, i) => (
+                        <i key={i} className="fa fa-star"></i>
+                      ))}
+                    </div>
+                    <div className="product-wid-price">
+                      <ins>${product.price}</ins>
+                      <del>${product.oldPrice}</del>
+                    </div>
                   </div>
-                  <div className="product-wid-price">
-                    <ins>${product.price}</ins>
-                    <del>${product.oldPrice}</del>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>

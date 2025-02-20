@@ -7,7 +7,6 @@ import ProductWidget from "../components/ProductWidget";
 function Home() {
   return (
     <>
-      <Menu />
       <Hero />
       <Features />
       <Brands />

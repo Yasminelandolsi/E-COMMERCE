@@ -16,7 +16,7 @@ const Footer = () => {
         console.error("Error fetching categories:", error);
       });
   }, []);
-
+  
   return (
     <div className="footer-top-area">
       <div className="zigzag-bottom"></div>
