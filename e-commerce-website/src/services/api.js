@@ -17,6 +17,7 @@ export const fetchTopSellers = () => axios.get(`${API_BASE_URL}/top-sellers-prod
 export const fetchNewArrivals = () => axios.get(`${API_BASE_URL}/top-new-products`);
 
 // Cart
+export const createCart = () => axios.post(`${API_BASE_URL}/carts`);
 export const fetchCart = (cartId) => axios.get(`${API_BASE_URL}/carts/${cartId}`);
 export const addToCart = (cartId, product) => axios.post(`${API_BASE_URL}/carts/${cartId}`, product);
 export const updateCartItem = (cartId, itemId, updatedItem) => axios.put(`${API_BASE_URL}/carts/${cartId}/items/${itemId}`, updatedItem);

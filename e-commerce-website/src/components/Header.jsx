@@ -11,7 +11,7 @@ const Header = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current location
+  const location = useLocation();
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -22,7 +22,6 @@ const Header = () => {
         console.error("Error fetching products:", error);
       }
     };
-
     loadProducts();
   }, []);
 
@@ -31,7 +30,7 @@ const Header = () => {
       const results = products.filter((product) =>
         product.name.toLowerCase().startsWith(query.toLowerCase())
       );
-      setFilteredProducts(results.slice(0, 10)); // Limit to 10 results
+      setFilteredProducts(results.slice(0, 10));
     } else {
       setFilteredProducts([]);
     }
@@ -46,7 +45,7 @@ const Header = () => {
       const results = products.filter((product) =>
         product.name.toLowerCase().startsWith(query.toLowerCase())
       );
-      setFilteredProducts(results.slice(0, 10)); // Limit to 10 results
+      setFilteredProducts(results.slice(0, 10));
     } else {
       setFilteredProducts([]);
     }
@@ -54,6 +53,10 @@ const Header = () => {
 
   const handleProductClick = (productId) => {
     navigate(`/product/${productId}`);
+  };
+
+  const handleCartClick = () => {
+    navigate("/cart");
   };
 
   return (
@@ -93,11 +96,11 @@ const Header = () => {
           {/* Shopping Cart Section */}
           <div className="col-sm-4">
             <div className="shopping-item">
-              <a href="cart.html">
+              <button onClick={handleCartClick} style={{ background: "none", border: "none", cursor: "pointer" }}>
                 Cart: <span className="cart-amunt">100.58 €</span>
                 <i className="fa fa-shopping-cart"></i>
                 <span className="product-count">5</span>
-              </a>
+              </button>
             </div>
           </div>
         </div>

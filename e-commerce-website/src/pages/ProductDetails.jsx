@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { fetchProductById } from "../services/api";
+import { addItem } from "../redux/cartSlice";
 import { useCookies } from "react-cookie";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
@@ -11,14 +13,19 @@ const ProductDetails = () => {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [cookies] = useCookies(["recentlyViewed"]);
-  const [quantity, setQuantity] = useState(1); // State for managing quantity
+  const [cookies, setCookie] = useCookies(["recentlyViewed"]);
+  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const loadProduct = async () => {
       try {
         const response = await fetchProductById(productId);
         setProduct(response.data);
+
+        const recentlyViewed = cookies.recentlyViewed || [];
+        const updatedRecentlyViewed = [response.data, ...recentlyViewed.filter(p => p.id !== response.data.id)].slice(0, 5);
+        setCookie("recentlyViewed", updatedRecentlyViewed, { path: "/" });
       } catch (error) {
         setError(error);
       } finally {
@@ -27,7 +34,11 @@ const ProductDetails = () => {
     };
 
     loadProduct();
-  }, [productId]);
+  }, [productId, cookies, setCookie]);
+
+  const handleAddToCart = () => {
+    dispatch(addItem({ ...product, quantity }));
+  };
 
   if (loading) {
     return <p>Loading product details...</p>;
@@ -44,10 +55,9 @@ const ProductDetails = () => {
   const imagePath = require(`../assets/products-img/${product.imageName.split('-')[0].toLowerCase()}/${product.imageName}`);
 
   const handleQuantityChange = (event) => {
-    setQuantity(event.target.value);
+    setQuantity(Number(event.target.value));
   };
 
-  // Calculate old price based on discount rate
   const oldPrice = product.price / (1 - product.discountRate / 100);
 
   return (
@@ -117,7 +127,7 @@ const ProductDetails = () => {
                           onChange={handleQuantityChange}
                         />
                       </div>
-                      <button className="add_to_cart_button" type="submit">Add to cart</button>
+                      <button type="button" className="add_to_cart_button" onClick={handleAddToCart}>Add to cart</button>
                     </form>
                     <div className="product-inner-category">
                       <h2>Product Description</h2>

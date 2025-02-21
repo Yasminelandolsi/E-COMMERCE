@@ -3,8 +3,9 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import CategoryPage from "./pages/Categorypage";
 import ProductDetails from "./pages/ProductDetails";
-import CheckoutPage from "./pages/CheckoutPage"; // Import the CheckoutPage component
-import { ProductProvider } from "./context/ProductContext"; // Import the ProductProvider
+import CheckoutPage from "./pages/CheckoutPage";
+import Cart from "./pages/Cart"; // Import the Cart component
+import { ProductProvider } from "./context/ProductContext";
 
 function App() {
   return (
@@ -40,6 +41,14 @@ function App() {
             element={
               <Layout>
                 <CheckoutPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <Layout>
+                <Cart />
               </Layout>
             }
           />

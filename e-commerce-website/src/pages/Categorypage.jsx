@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { useProductContext } from "../context/ProductContext";
 import ProductList from "../components/ProductList";
-import Pagination from "../components/Pagination"; // Import the Pagination component
+import Pagination from "../components/Pagination";
+import { addItem } from "../redux/cartSlice";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
 import "../assets/css/style.css";
 
 const CategoryPage = () => {
-  const { productListId } = useParams(); // Retrieve productListId from URL parameters
+  const { productListId } = useParams();
   const { products, loading, error, loadProducts } = useProductContext();
   const [categoryName, setCategoryName] = useState("");
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("useEffect triggered with productListId:", productListId);
     if (productListId) {
       loadProducts(productListId).then(data => {
         if (data && data.name) {
@@ -22,6 +24,10 @@ const CategoryPage = () => {
       });
     }
   }, [productListId, loadProducts]);
+
+  const handleAddToCart = (product) => {
+    dispatch(addItem({ ...product, quantity: 1 }));
+  };
 
   return (
     <div>
@@ -45,8 +51,8 @@ const CategoryPage = () => {
             <p>Error loading products: {error.message}</p>
           ) : (
             <>
-            <ProductList products={products} brand={categoryName} />
-            <Pagination /> {/* Use the Pagination component */}
+              <ProductList products={products} brand={categoryName} onAddToCart={handleAddToCart} />
+              <Pagination />
             </>
           )}
         </div>
