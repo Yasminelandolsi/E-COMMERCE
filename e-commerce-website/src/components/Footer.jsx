@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { fetchCategories } from "../services/api";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
@@ -10,13 +11,13 @@ const Footer = () => {
   useEffect(() => {
     fetchCategories()
       .then((response) => {
-        setCategories(response.data); // Assuming API returns an array of categories
+        setCategories(response.data); // Assuming API returns an array with each category having a productListId property
       })
       .catch((error) => {
         console.error("Error fetching categories:", error);
       });
   }, []);
-  
+
   return (
     <div className="footer-top-area">
       <div className="zigzag-bottom"></div>
@@ -42,9 +43,11 @@ const Footer = () => {
               <h2 className="footer-wid-title">Categories</h2>
               <ul>
                 {categories.length > 0 ? (
-                  categories.map((category, index) => (
-                    <li key={index}>
-                      <a href="#">{category.name}</a>
+                  categories.map((category) => (
+                    <li key={category.id}>
+                      <Link to={`/category/${category.productListId}`}>
+                        {category.name}
+                      </Link>
                     </li>
                   ))
                 ) : (

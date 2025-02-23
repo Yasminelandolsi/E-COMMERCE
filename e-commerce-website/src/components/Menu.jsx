@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
-import { fetchCategories } from "../services/api";
 import { useProductContext } from "../context/ProductContext";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
 import "../assets/css/style.css";
 
 const Menu = () => {
-  const [categories, setCategories] = useState([]);
-  const { loadProducts } = useProductContext();
-
-  useEffect(() => {
-    fetchCategories()
-      .then((response) => setCategories(response.data))
-      .catch((error) => console.error("Error fetching categories:", error));
-  }, []);
+  const { categories, loadProducts } = useProductContext();
 
   return (
     <div className="mainmenu-area">
@@ -23,7 +15,9 @@ const Menu = () => {
           <div className="navbar">
             <ul className="nav navbar-nav navbar-expand">
               <li className="active">
-                <NavLink to="/" className="hover:text-gray-300">Home</NavLink>
+                <NavLink to="/" className="hover:text-gray-300">
+                  Home
+                </NavLink>
               </li>
               {categories.length > 0 ? (
                 categories.map((category) => (

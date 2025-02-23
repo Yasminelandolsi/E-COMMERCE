@@ -3,8 +3,8 @@ import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
 import "../assets/css/style.css";
 
-const ProductList = ({ products, brand }) => {
-  const lowerCaseBrand = brand.toLowerCase(); // Convert brand to lowercase
+const ProductList = ({ products, brand, onAddToCart }) => {
+  const lowerCaseBrand = brand.toLowerCase();
 
   return (
     <div className="row">
@@ -17,7 +17,7 @@ const ProductList = ({ products, brand }) => {
             console.error("Error loading image:", error);
             imagePath = ""; // Fallback to an empty string or a placeholder image
           }
-          console.log("Image path:", imagePath); // Log the image path for debugging purposes
+          console.log("Image path:", imagePath);
 
           return (
             <div key={product.id} className="col-md-3 col-sm-6">
@@ -29,19 +29,21 @@ const ProductList = ({ products, brand }) => {
                   <a href={`/product/${product.id}`}>{product.name}</a>
                 </h2>
                 <div className="product-carousel-price">
-                  <ins>${product.price}</ins>
+                  <ins>${product.price.toFixed(2)}</ins>{" "}
+                  {product.oldPrice && product.oldPrice !== product.price && (
+                    <del>${product.oldPrice.toFixed(2)}</del>
+                  )}
                 </div>
                 <div className="product-option-shop">
-                  <a
+                  <button
                     className="add_to_cart_button"
                     data-quantity="1"
                     data-product_sku=""
                     data-product_id={product.id}
-                    rel="nofollow"
-                    href={`/cart/add/${product.id}`}
+                    onClick={() => onAddToCart(product)}
                   >
                     Add to cart
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

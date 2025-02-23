@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchAllProducts } from "../services/api";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
 import "../assets/css/style.css";
@@ -12,6 +13,10 @@ const Header = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+
+//to update the total price of the cart depending on the amount present in it
+  const cart = useSelector((state) => state.cart);
+  const orderTotal = useSelector((state) => state.cart.orderTotal || 0);
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -72,7 +77,7 @@ const Header = () => {
             </div>
           </div>
           {/* Conditionally Render Search Bar Section */}
-          {location.pathname !== "/checkout" && (
+          {location.pathname !== "/checkout" && location.pathname !== "/cart" && (
             <div className="col-sm-4">
               <input
                 type="text"
@@ -97,9 +102,9 @@ const Header = () => {
           <div className="col-sm-4">
             <div className="shopping-item">
               <button onClick={handleCartClick} style={{ background: "none", border: "none", cursor: "pointer" }}>
-                Cart: <span className="cart-amunt">100.58 €</span>
+                Cart: <span className="cart-amunt">{orderTotal.toFixed(2)} €</span>
                 <i className="fa fa-shopping-cart"></i>
-                <span className="product-count">5</span>
+                <span className="product-count">{cart.items.length}</span>
               </button>
             </div>
           </div>

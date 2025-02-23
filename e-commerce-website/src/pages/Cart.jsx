@@ -1,13 +1,17 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect  } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { removeItem, updateItem } from "../redux/cartSlice";
+import { removeItem, updateItem, updateOrderTotal } from "../redux/cartSlice";
+import { useNavigate } from 'react-router-dom';
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
 import "../assets/css/style.css";
+import img1 from "../assets/img/product-2.jpg";
+import img2 from "../assets/img/product-4.jpg";
 
 const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart || { items: [] });
+  const navigate = useNavigate(); // Add this line
 
   const handleRemove = useCallback((itemId) => {
     dispatch(removeItem(itemId));
@@ -36,6 +40,10 @@ const Cart = () => {
   const cartSubtotal = cart.items.reduce((acc, item) => acc + (parseFloat(item.price) || 0) * (parseInt(item.quantity, 10) || 0), 0);
   const tax = cartSubtotal * 0.20;
   const orderTotal = cartSubtotal + tax;
+  useEffect(() => {
+    dispatch(updateOrderTotal(orderTotal || 0));
+  }, [orderTotal, dispatch]);
+
 
   return (
     <div className="single-product-area">
@@ -143,7 +151,7 @@ const Cart = () => {
                       <td className="actions" colSpan="6">
                         <input
                           type="button"
-                          onClick={() => window.location.href = 'checkout.html'}
+                          onClick={() => navigate('/checkout')}
                           value="Checkout"
                           name="proceed"
                           className="checkout-button button alt wc-forward"
@@ -159,7 +167,7 @@ const Cart = () => {
                     <ul className="products">
                       <li className="product">
                         <a href="single-product.html">
-                          <img width="325" height="325" alt="T_4_front" className="attachment-shop_catalog wp-post-image" src="img/product-2.jpg" />
+                          <img width="325" height="325" alt="T_4_front" className="attachment-shop_catalog wp-post-image" src={img1} />
                           <h3>Ship Your Idea</h3>
                           <span className="price"><span className="amount">20.00 €</span></span>
                         </a>
@@ -167,7 +175,7 @@ const Cart = () => {
                       </li>
                       <li className="product">
                         <a href="single-product.html">
-                          <img width="325" height="325" alt="T_4_front" className="attachment-shop_catalog wp-post-image" src="img/product-4.jpg" />
+                          <img width="325" height="325" alt="T_4_front" className="attachment-shop_catalog wp-post-image" src={img2}/>
                           <h3>Ship Your Idea</h3>
                           <span className="price"><span className="amount">20.00 €</span></span>
                         </a>

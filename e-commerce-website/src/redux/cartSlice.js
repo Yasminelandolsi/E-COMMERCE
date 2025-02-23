@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// Load cart state from localStorage
 const loadCartState = () => {
   try {
     const serializedState = localStorage.getItem("cart");
@@ -8,18 +7,23 @@ const loadCartState = () => {
       return {
         cartId: "unique-cart-id",
         items: [],
+        orderTotal: 0
       };
     }
-    return JSON.parse(serializedState);
+    const state = JSON.parse(serializedState);
+    return {
+      ...state,
+      orderTotal: state.orderTotal || 0
+    };
   } catch (err) {
     return {
       cartId: "unique-cart-id",
       items: [],
+      orderTotal: 0
     };
   }
 };
 
-// Save cart state to localStorage
 const saveCartState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
@@ -36,6 +40,7 @@ const cartSlice = createSlice({
     setCart: (state, action) => {
       state.cartId = action.payload.id;
       state.items = action.payload.items || [];
+      state.orderTotal = action.payload.orderTotal || 0;
       saveCartState(state);
     },
     addItem: (state, action) => {
@@ -45,19 +50,43 @@ const cartSlice = createSlice({
       } else {
         state.items.push(action.payload);
       }
+
+       // Calculate new total immediately
+       const cartSubtotal = state.items.reduce((acc, item) => 
+        acc + (parseFloat(item.price) || 0) * (parseInt(item.quantity, 10) || 0), 0);
+      const tax = cartSubtotal * 0.20;
+      state.orderTotal = cartSubtotal + tax;
+
       saveCartState(state);
     },
     updateItem: (state, action) => {
       const index = state.items.findIndex((item) => item.id === action.payload.id);
       if (index !== -1) state.items[index] = action.payload;
+
+      // Calculate new total immediately
+      const cartSubtotal = state.items.reduce((acc, item) => 
+        acc + (parseFloat(item.price) || 0) * (parseInt(item.quantity, 10) || 0), 0);
+      const tax = cartSubtotal * 0.20;
+      state.orderTotal = cartSubtotal + tax;
+
       saveCartState(state);
     },
     removeItem: (state, action) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
+
+     // Calculate new total immediately
+     const cartSubtotal = state.items.reduce((acc, item) => 
+      acc + (parseFloat(item.price) || 0) * (parseInt(item.quantity, 10) || 0), 0);
+    const tax = cartSubtotal * 0.20;
+    state.orderTotal = cartSubtotal + tax;
       saveCartState(state);
     },
+    updateOrderTotal: (state, action) => {
+      state.orderTotal = action.payload || 0;
+      saveCartState(state);
+    }
   },
 });
 
-export const { setCart, addItem, updateItem, removeItem } = cartSlice.actions;
+export const { setCart, addItem, updateItem, removeItem, updateOrderTotal } = cartSlice.actions;
 export default cartSlice.reducer;

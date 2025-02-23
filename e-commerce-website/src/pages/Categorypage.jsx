@@ -17,7 +17,7 @@ const CategoryPage = () => {
 
   useEffect(() => {
     if (productListId) {
-      loadProducts(productListId).then(data => {
+      loadProducts(productListId).then((data) => {
         if (data && data.name) {
           setCategoryName(data.name);
         }
@@ -28,6 +28,20 @@ const CategoryPage = () => {
   const handleAddToCart = (product) => {
     dispatch(addItem({ ...product, quantity: 1 }));
   };
+
+  // Enhance each product with an oldPrice property.
+  // If a discountRate exists and is greater than 0, compute the old price.
+  // Otherwise, oldPrice is set equal to product.price.
+  const productsWithOldPrice = products.map((product) => {
+    const computedOldPrice =
+      product.discountRate && product.discountRate > 0
+        ? product.price / (1 - product.discountRate / 100)
+        : product.price;
+    return {
+      ...product,
+      oldPrice: computedOldPrice,
+    };
+  });
 
   return (
     <div>
@@ -51,7 +65,11 @@ const CategoryPage = () => {
             <p>Error loading products: {error.message}</p>
           ) : (
             <>
-              <ProductList products={products} brand={categoryName} onAddToCart={handleAddToCart} />
+              <ProductList
+                products={productsWithOldPrice}
+                brand={categoryName}
+                onAddToCart={handleAddToCart}
+              />
               <Pagination />
             </>
           )}
