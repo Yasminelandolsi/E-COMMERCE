@@ -8,12 +8,13 @@ import { addItem } from "../redux/cartSlice";
 import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
 import "../assets/css/style.css";
-
 const CategoryPage = () => {
   const { productListId } = useParams();
   const { products, loading, error, loadProducts } = useProductContext();
   const [categoryName, setCategoryName] = useState("");
   const dispatch = useDispatch();
+
+  //rerendering when prosuctListId changes
 
   useEffect(() => {
     if (productListId) {
@@ -30,8 +31,6 @@ const CategoryPage = () => {
   };
 
   // Enhance each product with an oldPrice property.
-  // If a discountRate exists and is greater than 0, compute the old price.
-  // Otherwise, oldPrice is set equal to product.price.
   const productsWithOldPrice = products.map((product) => {
     const computedOldPrice =
       product.discountRate && product.discountRate > 0

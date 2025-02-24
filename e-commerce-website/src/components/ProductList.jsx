@@ -4,21 +4,12 @@ import "../assets/css/responsive.css";
 import "../assets/css/style.css";
 
 const ProductList = ({ products, brand, onAddToCart }) => {
-  const lowerCaseBrand = brand.toLowerCase();
 
   return (
     <div className="row">
       {products.length > 0 ? (
         products.map((product) => {
-          let imagePath;
-          try {
-            imagePath = require(`../assets/products-img/${lowerCaseBrand}/${product.image}`);
-          } catch (error) {
-            console.error("Error loading image:", error);
-            imagePath = ""; // Fallback to an empty string or a placeholder image
-          }
-          console.log("Image path:", imagePath);
-
+          const imagePath = (`/products-img/${brand.toLowerCase()}/${product.image}`);
           return (
             <div key={product.id} className="col-md-3 col-sm-6">
               <div className="single-shop-product">

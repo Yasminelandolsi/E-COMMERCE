@@ -9,7 +9,7 @@ import "../assets/css/bootstrap.min.css";
 import "../assets/css/responsive.css";
 import "../assets/css/style.css";
 
-const ProductDetails = () => {
+  const ProductDetails = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [loadingProduct, setLoadingProduct] = useState(true);

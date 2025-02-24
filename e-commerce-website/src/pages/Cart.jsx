@@ -11,8 +11,7 @@ import img2 from "../assets/img/product-4.jpg";
 const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart || { items: [] });
-  const navigate = useNavigate(); // Add this line
-
+  const navigate = useNavigate(); 
   const handleRemove = useCallback((itemId) => {
     dispatch(removeItem(itemId));
   }, [dispatch]);
@@ -53,7 +52,7 @@ const Cart = () => {
           <div className="col-md-12">
             <div className="product-content-right">
               <div className="woocommerce">
-                <table className="shop_table cart" cellspacing="0">
+                <table className="shop_table cart" cellSpacing="0">
                   <thead>
                     <tr>
                       <th className="product-remove">&nbsp;</th>
@@ -186,7 +185,7 @@ const Cart = () => {
 
                   <div className="cart_totals">
                     <h2>Cart Totals</h2>
-                    <table cellspacing="0">
+                    <table cellSpacing="0">
                       <tbody>
                         <tr className="cart-subtotal">
                           <th>Cart Subtotal</th>
